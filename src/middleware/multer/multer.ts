@@ -1,10 +1,6 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import multer, { StorageEngine } from "multer";
 import path from "path";
-
-export const getAll = (req:Request, res: Response) => {
-    res.send("Olá upload teste");
-}
 
 // Configuração do Multer
 const storage: StorageEngine = multer.diskStorage({
@@ -26,6 +22,15 @@ export const upload = multer({
     cb(null, true);
   },*/
 });
+
+export const renameImage = (req: Request, res: Response, next: NextFunction): void => {
+  if (req.file) {
+    req.body.image = req.file.filename;
+  }else{
+    req.body.image = "";
+  }
+  next();
+};
 
 export const postImage = (req: Request, res: Response): void => {
   if (!req.file) {

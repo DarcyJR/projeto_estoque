@@ -1,15 +1,13 @@
 import { Router } from "express";
 import { ProductController } from "../controllers/ProdutoController";
-//import { postImage } from "../controllers/UploadsController";
-//import multer from "multer";
+import { renameImage, upload } from "../middleware/multer/multer";
 
 const estoqueRouter = Router();
-//const upload = multer();
 
 const productoController = new ProductController();
 
 estoqueRouter.get("/estoque", productoController.getAll);
-estoqueRouter.post("/estoque", productoController.create);
+estoqueRouter.post("/estoque", upload.single("image"), renameImage, productoController.create);
 estoqueRouter.put("/estoque/:id", productoController.update);
 estoqueRouter.delete("/estoque/:id", productoController.delete);
 
